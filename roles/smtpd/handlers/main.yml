@@ -1,0 +1,4 @@
+---
+- name: smtpd
+  command: rcctl restart smtpd
+  become: true

@@ -1,0 +1,16 @@
+---
+- name: netstart
+  command: sh /etc/netstart
+  become: true
+
+- name: pf
+  command: pfctl -f /etc/pf.conf
+  become: true
+
+- name: sshd
+  command: rcctl reload sshd
+  become: true
+  when: (services["sshd"] | default) is not false
+
+- name: sysctl
+  debug: msg="The system must be rebooted or the sysctl changes applied by hand."

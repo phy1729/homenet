@@ -1,0 +1,5 @@
+{% for network_name, key in item.value.wifi_networks | default({}) | dictsort %}
+join "{{ network_name }}"{% if key is not none %} wpakey "{{ key }}"{% endif %}
+
+{% endfor %}
+{% include("hostname.base") %}

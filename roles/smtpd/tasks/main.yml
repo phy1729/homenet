@@ -1,0 +1,20 @@
+---
+- name: Copy credentials
+  template:
+    src: secrets
+    dest: /etc/mail/secrets
+    owner: root
+    group: _smtpd
+    mode: 0640
+  become: true
+  notify: smtpd
+
+- name: Copy config
+  copy:
+    src: smtpd.conf
+    dest: /etc/mail/smtpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  notify: smtpd

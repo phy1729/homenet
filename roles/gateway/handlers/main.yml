@@ -1,0 +1,28 @@
+---
+- name: dhcpcd
+  command: rcctl restart dhcpcd
+  become: true
+
+- name: dhcpd
+  command: rcctl restart dhcpd
+  become: true
+
+- name: httpd
+  command: rcctl reload httpd
+  become: true
+
+- name: ntpd
+  command: rcctl restart ntpd
+  become: true
+
+- name: pf
+  command: pfctl -f /etc/pf.conf
+  become: true
+
+- name: rad
+  command: rcctl reload rad
+  become: true
+
+- name: unbound
+  command: rcctl reload unbound
+  become: true

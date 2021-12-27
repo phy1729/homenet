@@ -1,0 +1,4 @@
+AuthenticationMethods publickey
+AuthorizedKeysFile .ssh/authorized_keys
+PermitRootLogin no
+Subsystem sftp /usr/libexec/sftp-server

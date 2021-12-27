@@ -1,0 +1,90 @@
+---
+- name: Set installurl
+  copy:
+    src: installurl
+    dest: /etc/installurl
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+
+- name: Install packages
+  openbsd_pkg:
+    state: present
+    name: "{{ packages }}"
+  become: true
+
+- name: Configure networking
+  template:
+    src: hostname.{{ interface_type[item.key | trim('0123456789')] }}
+    dest: /etc/hostname.{{ item.key }}
+    owner: root
+    group: wheel
+    mode: 0640
+  become: true
+  loop: "{{ interfaces | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  notify: netstart
+
+- name: Configure pf
+  copy:
+    src: pf.conf
+    dest: /etc/pf.conf
+    owner: root
+    group: wheel
+    mode: 0600
+  when: default_firewall | default(true)
+  become: true
+  notify: pf
+
+- name: Configure doas
+  copy:
+    src: doas.conf
+    dest: /etc/doas.conf
+    owner: root
+    group: wheel
+    mode: 0640
+  become: true
+
+- name: Configure sshd
+  copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  notify: sshd
+
+- name: Configure sysctl
+  template:
+    src: sysctl.conf
+    dest: /etc/sysctl.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  when: sysctl is defined
+  become: true
+  notify: sysctl
+
+- name: Configure services
+  service:
+    name: "{{ item.key }}"
+    enabled: "{{ item.value is not false }}"
+    arguments: "{{ item.value }}"
+  become: true
+  loop: "{{ services | default({}) | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Create users
+  user:
+    name: "{{ item.key }}"
+    groups: "{{ item.value.groups | default([]) }}"
+    login_class: "{{ item.value.login_class | default('default') }}"
+    shell: "{{ item.value.shell | default('/bin/ksh') }}"
+  become: true
+  loop: "{{ users | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"

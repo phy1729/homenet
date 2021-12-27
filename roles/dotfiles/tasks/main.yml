@@ -1,0 +1,13 @@
+---
+- name: Clone git repo
+  git:
+    repo: "{{ 'git@github.com:' if (use_ssh | default(false)) else 'https://github.com/' }}phy1729/dotfiles.git"
+    dest: /home/phy1729/.dotfiles
+    bare: true
+    update: false
+  register: clone
+
+- name: Checkout dotfiles
+  command:
+    cmd: git --git-dir=/home/phy1729/.dotfiles --work-tree=/home/phy1729 checkout -f
+  when: clone["changed"]

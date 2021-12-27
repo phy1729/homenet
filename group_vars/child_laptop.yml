@@ -1,0 +1,20 @@
+---
+packages:
+  - firefox
+  - git
+  - i3
+  - mupdf--
+  - python%3.9
+  - unzip--
+  - vim--gtk3-perl-python3-ruby
+  - vlc
+  - xfce
+  - zsh
+
+services:
+  apmd: null
+  xenodm: null
+
+sysctl:
+  kern.audio.record: 1
+  machdep.lidaction: 0

@@ -1,0 +1,27 @@
+---
+- hosts: laptop
+  vars_files:
+    - secrets/laptop.yml
+
+  roles:
+    - role: openbsd
+    - role: dotfiles
+      vars:
+        use_ssh: true
+    - role: smtpd
+      vars:
+        username: phy1729@gmail.com
+        password: "{{ email_password }}"
+
+  tasks:
+    - name: Clone git repos
+      git:
+        repo: git@github.com:phy1729/{{ item }}.git
+        dest: /home/phy1729/{{ item }}
+        update: false
+      loop:
+        - homenet
+        - ports
+        - src
+        - zsh
+        - zsh-syntax-highlighting

@@ -1,0 +1,8 @@
+[child_laptop]
+192.168.1.10 ansible_become_method=doas
+
+[gateway]
+192.168.1.1 ansible_become_method=doas
+
+[laptop]
+localhost ansible_become_method=doas ansible_connection=local

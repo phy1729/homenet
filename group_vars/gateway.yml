@@ -1,0 +1,80 @@
+---
+default_firewall: false
+
+http_spoof_sites:
+  spectrum.s3.amazonaws.com:
+    /kindle-wifi/wifistub-eink.html:
+      content: |
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+        <html>
+        <head>
+        <title>Kindle Reachability Probe Page</title>
+        <META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <!--81ce4465-7167-4dcb-835b-dcc9e44c112a created with python 2.5 uuid.uuid4()-->
+        </head>
+        <body bgcolor="#ffffff" text="#000000">
+        81ce4465-7167-4dcb-835b-dcc9e44c112a
+        </body>
+        </html>
+  connectivitycheck.android.com:
+    /generate_204:
+      code: 204
+  captive.apple.com:
+    /hotspot-detect.html:
+      content: |
+        <HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>
+  detectportal.firefox.com:
+    /canonical.html:
+      content: |-
+        <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+    /success.txt:
+      content: |
+        success
+  firetvcaptiveportal.com:
+    /generate_204:
+      code: 204
+  connectivitycheck.gstatic.com:
+    /generate_204:
+      code: 204
+  www.google.com:
+    /gen_204:
+      code: 204
+  play.googleapis.com:
+    /generate_204:
+      code: 204
+  www.msftconnecttest.com:
+    /connecttest.txt:
+      content: |-
+        Microsoft Connect Test
+  www.msftncsi.com:
+    /ncsi.txt:
+      content: |
+        Microsoft NCSI
+  captive.roku.com:
+    /ok:
+      content: |
+        ok
+
+packages:
+  - dhcpcd
+
+services:
+  dhcpcd: -C resolv.conf em0 vether0
+  dhcpd: vether0
+  httpd: null
+  ntpd: null
+  rad: null
+  sndiod: false
+  unbound: null
+
+sysctl:
+  ddb.panic: 0
+  net.inet.ip.forwarding: 1
+  net.inet6.ip6.forwarding: 1
+
+users:
+  phy1729:
+    groups:
+      - wheel
+    login_class: staff
+    shell: /bin/ksh

@@ -1,0 +1,4 @@
+{% for interface in item.value.bridge_interfaces | default([]) | sort %}
+add {{ interface }}
+{% endfor %}
+up

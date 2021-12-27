@@ -1,0 +1,11 @@
+{% if "address" in item.value %}
+inet {{ item.value.address }} {{ item.value.subnet_mask }}
+{% endif %}
+{% for line in item.value.raw_lines | default([]) %}
+{{ line }}
+{% endfor %}
+{% if item.value.autoconf | default("address" not in item.value) %}
+inet autoconf
+inet6 autoconf
+{% endif %}
+up

@@ -1,0 +1,9 @@
+---
+interface_type:
+  bridge: bridge
+  em: base
+  iwm: wireless
+  urtwn: wireless
+  vether: base
+  vio: base
+  wg: wireguard

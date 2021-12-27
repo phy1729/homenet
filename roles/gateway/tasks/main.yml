@@ -1,0 +1,125 @@
+---
+- name: Configure pf
+  template:
+    src: pf.conf
+    dest: /etc/pf.conf
+    owner: root
+    group: wheel
+    mode: 0600
+    validate: pfctl -nf %s
+  become: true
+  notify: pf
+
+- name: Configure dhcpcd
+  copy:
+    src: dhcpcd.conf
+    dest: /etc/dhcpcd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  notify: dhcpcd
+
+- name: Configure dhcpd
+  template:
+    src: dhcpd.conf
+    dest: /etc/dhcpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+    validate: dhcpd -nc %s
+  become: true
+  notify: dhcpd
+
+- name: Generate autoinstall files
+  template:
+    src: install.conf
+    dest: /var/www/htdocs/{{ item.value.mac }}-install.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  loop: "{{ network_hosts | dict2items | selectattr('value.generate_autoinstall', 'true') }}"
+  loop_control:
+    label: "{{ item.value.mac }}-install.conf"
+
+- name: Create directories for httpd
+  file:
+    path: /var/www/htdocs/{{ item }}
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0755
+  become: true
+  loop: "{{ http_spoof_sites
+            | walk('*.*.content')
+            | map(attribute='keys')
+            | map('join')
+            | map('pathiter', start=1, stop=-1)
+            | flatten
+            | unique }}"
+
+- name: Create spoof files
+  copy:
+    dest: /var/www/htdocs/{{ item.domain }}{{ item.path }}
+    content: "{{ item.value }}"
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  loop: "{{ http_spoof_sites | walk('*.*.content', labels=('domain', 'path')) }}"
+  loop_control:
+    label: "{{ item.domain }}{{ item.path }}"
+
+- name: Configure httpd
+  template:
+    src: httpd.conf
+    dest: /etc/httpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+    validate: httpd -nf %s
+  become: true
+  notify: httpd
+
+- name: Configure ntpd
+  copy:
+    src: ntpd.conf
+    dest: /etc/ntpd.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  notify: ntpd
+
+- name: Configure rad
+  copy:
+    src: rad.conf
+    dest: /etc/rad.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  notify: rad
+
+- name: Configure unbound
+  template:
+    src: unbound.conf
+    dest: /var/unbound/etc/unbound.conf
+    owner: root
+    group: wheel
+    mode: 0644
+    validate: unbound-checkconf %s
+  become: true
+  notify: unbound
+
+- name: Configure other services
+  copy:
+    src: "{{ item }}"
+    dest: /etc/{{ item }}
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  loop:
+    - dhclient.conf
