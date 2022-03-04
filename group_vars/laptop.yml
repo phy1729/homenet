@@ -1,4 +1,9 @@
 ---
+login_classes:
+  phy1729:
+    rtable: 1
+    tc: staff
+
 packages:
   - ansible
   - autoconf%2.69
@@ -14,7 +19,6 @@ packages:
   - sysclean
   - vim--gtk3-perl-python3-ruby
   - zsh
-
 
 services:
   apmd: null
@@ -33,5 +37,5 @@ users:
       - wheel
       - wobj
       - wsrc
-    login_class: staff
+    login_class: phy1729
     shell: /usr/local/bin/zsh
