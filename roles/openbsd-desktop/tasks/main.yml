@@ -1,0 +1,45 @@
+---
+- name: Set Xsession
+  copy:
+    content: |
+      xsetroot -solid black
+      exec {{ item.value.window_manager }}
+    dest: /home/{{ item.key }}/.xsession
+    owner: "{{ item.key }}"
+    group: "{{ item.key }}"
+    mode: 0644
+  when: item.value.window_manager is defined
+  become: true
+  loop: "{{ users | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Create Desktop
+  file:
+    path: /home/{{ item.key }}/Desktop
+    state: directory
+    owner: "{{ item.key }}"
+    group: "{{ item.key }}"
+    mode: 0755
+  when: item.value.desktop_shortcuts is defined
+  become: true
+  loop: "{{ users | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
+- name: Create desktop shortcuts
+  copy:
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Type=Link
+      Name={{ item.name }}
+      URL={{ item.value }}
+    dest: /home/{{ item.user }}/Desktop/{{ item.name }}.desktop
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
+    mode: 0755
+  become: true
+  loop: "{{ users | walk('*.desktop_shortcuts.*', labels=('user', 'name')) }}"
+  loop_control:
+    label: "{{ item.user }}: {{ item.name }}"
