@@ -78,6 +78,18 @@
   loop_control:
     label: "{{ item.key }}"
 
+- name: Configure login classes
+  template:
+    src: class.login
+    dest: /etc/login.conf.d/{{ item.key }}
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+  loop: "{{ login_classes | default({}) | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+
 - name: Create users
   user:
     name: "{{ item.key }}"
