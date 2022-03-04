@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version=1.5
+Name={{ item.name }}
+{% for key, value in item.value | dictsort %}
+{{ key }}={{ value }}
+{% endfor %}

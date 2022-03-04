@@ -27,14 +27,10 @@
   loop_control:
     label: "{{ item.key }}"
 
+# https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
 - name: Create desktop shortcuts
-  copy:
-    content: |
-      [Desktop Entry]
-      Version=1.0
-      Type=Link
-      Name={{ item.name }}
-      URL={{ item.value }}
+  template:
+    src: desktop
     dest: /home/{{ item.user }}/Desktop/{{ item.name }}.desktop
     owner: "{{ item.user }}"
     group: "{{ item.user }}"
