@@ -16,7 +16,7 @@
 
 - name: Configure networking
   template:
-    src: hostname.{{ interface_type[item.key | trim('0123456789')] }}
+    src: hostname.base
     dest: /etc/hostname.{{ item.key }}
     owner: root
     group: wheel

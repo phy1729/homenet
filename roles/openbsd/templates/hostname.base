@@ -1,6 +1,10 @@
 {% if "address" in item.value %}
 inet {{ item.value.address }} {{ item.value.subnet_mask }}
 {% endif %}
+{% set if_type = interface_type[item.key | trim("0123456789")] %}
+{% if if_type %}
+{% include("hostname." + if_type) %}
+{% endif %}
 {% for line in item.value.raw_lines | default([]) %}
 {{ line }}
 {% endfor %}

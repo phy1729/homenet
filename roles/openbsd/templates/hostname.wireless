@@ -2,4 +2,3 @@
 join "{{ network_name }}"{% if key is not none %} wpakey "{{ key }}"{% endif %}
 
 {% endfor %}
-{% include("hostname.base") %}
