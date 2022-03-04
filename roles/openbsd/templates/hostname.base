@@ -12,4 +12,8 @@ inet {{ item.value.address }} {{ item.value.subnet_mask }}
 inet autoconf
 inet6 autoconf
 {% endif %}
+{% if item.value.enabled | default(true) %}
 up
+{% else %}
+down
+{% endif %}
