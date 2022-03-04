@@ -1,5 +1,7 @@
 ---
 packages:
+  - blockgame
+  - chromium
   - firefox
   - git
   - i3
