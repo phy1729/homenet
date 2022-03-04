@@ -1,3 +1,6 @@
+{% if "rdomain" in item.value %}
+rdomain {{ item.value.rdomain }}
+{% endif %}
 {% if "address" in item.value %}
 inet {{ item.value.address }} {{ item.value.subnet_mask }}
 {% endif %}
