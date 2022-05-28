@@ -11,7 +11,10 @@
 - name: Install packages
   openbsd_pkg:
     state: present
-    name: "{{ packages }}"
+    name: "{{ [
+      'python%3.10',
+      'sysclean',
+    ] + packages }}"
   become: true
 
 - name: Configure networking
