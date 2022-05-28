@@ -1,5 +1,5 @@
 wgkey {{ item.value.wireguard.key }}{% if "port" in item.value.wireguard %} wgport {{ item.value.wireguard.port }}{% endif %}
 
 {% for peer_key, peer in item.value.wireguard.peers | default({}) | dictsort %}
-wgpeer {{ peer_key }} wgpsk {{ peer.psk }}{% if "endpoint" in peer %} wgendpoint {{ peer.endpoint }} {{ peer.port }}{% endif %} wgaip {{ peer.allowed_ip }}
+wgpeer {{ peer_key }}{% if "psk" in peer %} wgpsk {{ peer.psk }}{% endif %}{% if "endpoint" in peer %} wgendpoint {{ peer.endpoint }} {{ peer.port }}{% endif %} wgaip {{ peer.allowed_ip }}
 {% endfor %}
