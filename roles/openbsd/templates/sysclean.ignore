@@ -1,0 +1,10 @@
+{% for class in login_classes | default({}) | dict2items %}
+/etc/login.conf.d/{{ class.key }}
+{% endfor %}
+/etc/signify/openbsd-*-base.pub
+/etc/signify/openbsd-*-fw.pub
+/etc/signify/openbsd-*-pkg.pub
+/etc/signify/openbsd-*-syspatch.pub
+{% for line in sysclean_ignore | default([]) %}
+{{ line }}
+{% endfor %}

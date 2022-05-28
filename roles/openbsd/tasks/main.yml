@@ -93,6 +93,15 @@
   loop_control:
     label: "{{ item.key }}"
 
+- name: Configure sysclean
+  template:
+    src: sysclean.ignore
+    dest: /etc/sysclean.ignore
+    owner: root
+    group: wheel
+    mode: 0644
+  become: true
+
 - name: Create users
   user:
     name: "{{ item.key }}"
