@@ -12,7 +12,7 @@
   openbsd_pkg:
     state: present
     name: "{{ [
-      'python%3.10',
+      'python3',
       'sysclean',
     ] + packages }}"
   become: true
