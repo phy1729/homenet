@@ -31,12 +31,13 @@
   notify: netstart
 
 - name: Configure pf
-  copy:
+  template:
     src: pf.conf
     dest: /etc/pf.conf
     owner: root
     group: wheel
     mode: 0600
+    validate: pfctl -nf %s
   when: default_firewall | default(true)
   become: true
   notify: pf
