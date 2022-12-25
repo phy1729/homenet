@@ -77,7 +77,7 @@
     enabled: "{{ item.value is not false }}"
     arguments: "{{ item.value }}"
   become: true
-  loop: "{{ services | default({}) | dict2items }}"
+  loop: "{{ services | dict2items }}"
   loop_control:
     label: "{{ item.key }}"
 
@@ -89,7 +89,7 @@
     group: wheel
     mode: 0644
   become: true
-  loop: "{{ login_classes | default({}) | dict2items }}"
+  loop: "{{ login_classes | dict2items }}"
   loop_control:
     label: "{{ item.key }}"
 
