@@ -61,7 +61,7 @@
 
 - name: Create spoof files
   copy:
-    dest: /var/www/htdocs/{{ item.domain }}{{ item.path }}
+    dest: /var/www/htdocs/{{ item.domain }}{{ '/index.html' if item.path == '/' else item.path }}
     content: "{{ item.value }}"
     owner: root
     group: wheel

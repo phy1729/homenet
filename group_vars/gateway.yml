@@ -50,6 +50,10 @@ http_spoof_sites:
     /ncsi.txt:
       content: |
         Microsoft NCSI
+  ctest.cdn.nintendo.net:
+    /:
+      content: |-
+        ok
   captive.roku.com:
     /ok:
       content: |
