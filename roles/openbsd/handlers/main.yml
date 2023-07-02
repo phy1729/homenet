@@ -13,4 +13,5 @@
   when: (services["sshd"] | default) is not false
 
 - name: sysctl
-  debug: msg="The system must be rebooted or the sysctl changes applied by hand."
+  debug:
+    msg: The system must be rebooted or the sysctl changes applied by hand.
