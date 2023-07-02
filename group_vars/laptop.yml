@@ -23,7 +23,7 @@ packages:
 services:
   apmd: null
   sndiod: -mplay -z 480 -b 1920
-  sshd: false
+  sshd: null
 
 sysclean_ignore:
   - /etc/mail/secrets
