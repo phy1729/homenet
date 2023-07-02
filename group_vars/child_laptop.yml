@@ -1,5 +1,7 @@
 ---
 packages:
+  - arduino
+  - arduino-makefile
   - blockgame
   - chromium
   - firefox
