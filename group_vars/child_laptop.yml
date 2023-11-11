@@ -7,8 +7,8 @@ packages:
   - firefox
   - git
   - i3
+  - libreoffice
   - mupdf--
-  - python%3.9
   - unzip--
   - vim--gtk3-perl-python3-ruby
   - vlc
