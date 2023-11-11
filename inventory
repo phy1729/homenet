@@ -6,3 +6,7 @@
 
 [laptop]
 localhost ansible_become_method=doas ansible_connection=local
+
+[openbsd_stable:children]
+child_laptop
+gateway

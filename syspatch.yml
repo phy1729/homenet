@@ -1,0 +1,12 @@
+---
+- hosts: openbsd_stable
+  gather_facts: false
+  tasks:
+    - name: Run syspatch
+      syspatch:
+      become: true
+      register: syspatch
+
+    - name: Print result
+      debug:
+        msg: "{{ syspatch.stdout_lines }}"
