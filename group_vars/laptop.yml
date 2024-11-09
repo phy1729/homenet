@@ -6,6 +6,8 @@ login_classes:
 
 packages:
   - ansible
+  - arduino
+  - arduino-makefile
   - autoconf%2.69
   - firefox
   - git
@@ -15,8 +17,10 @@ packages:
   - mpv
   - mupdf--
   - mutt--sasl
+  - rust
+  - rust-clippy
+  - rust-rustfmt
   - sct
-  - sysclean
   - vim--gtk3-perl-python3-ruby
   - zsh
 

@@ -8,6 +8,7 @@ packages:
   - git
   - i3
   - libreoffice
+  - lwjgl
   - mupdf--
   - unzip--
   - vim--gtk3-perl-python3-ruby
