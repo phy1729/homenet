@@ -2,6 +2,7 @@
 - hosts: child_laptop
   vars_files:
     - secrets/child_laptop.yml
+    - secrets/{{ ansible_hostname }}.yml
 
   roles:
     - role: openbsd
