@@ -8,3 +8,16 @@
     - role: openbsd
     - role: openbsd-desktop
     - role: dotfiles
+
+  tasks:
+    - include_role:
+        name: firefox
+      vars:
+        username: "{{ include_role_item.key }}"
+        preferences: "{{ include_role_item.value.firefox.preferences | default({}) }}"
+        extensions: "{{ include_role_item.value.firefox.extensions | default([]) }}"
+      when: include_role_item.value.firefox is defined
+      loop: "{{ users | dict2items }}"
+      loop_control:
+        label: "{{ include_role_item.key }}"
+        loop_var: include_role_item

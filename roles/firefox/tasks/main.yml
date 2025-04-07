@@ -1,0 +1,105 @@
+---
+- name: Get user information
+  user:
+    name: '{{ username }}'
+    state: present
+  check_mode: true
+  register: user
+
+- name: Get firefox profiles
+  firefox_profile_info:
+    user: '{{ username }}'
+  become: true
+  register: profiles
+
+- name: Create {{ profile_name }} profile
+  command: doas -u {{ username }} env DISPLAY=:0 firefox -CreateProfile {{ profile_name }}
+  when: profile_name not in profiles["profiles"]
+  become: true
+
+- name: Get firefox profiles
+  firefox_profile_info:
+    user: '{{ username }}'
+  become: true
+  register: profiles
+
+- name: Set installs.ini
+  community.general.ini_file:
+    path: '{{ user["home"] }}/.mozilla/firefox/installs.ini'
+    section: '{{ install_hash }}'
+    option: '{{ item.option }}'
+    value: '{{ item.value }}'
+    exclusive: false
+    no_extra_spaces: true
+    owner: '{{ username }}'
+    group: '{{ user["group"] }}'
+    mode: 0644
+  become: true
+  loop:
+    - option: Default
+      value: '{{ profiles["profiles"][profile_name]["path"] }}'
+    - option: Locked
+      value: 1
+
+- name: Set Install in profiles.ini
+  community.general.ini_file:
+    path: '{{ user["home"] }}/.mozilla/firefox/profiles.ini'
+    section: 'Install{{ install_hash }}'
+    option: '{{ item.option }}'
+    value: '{{ item.value }}'
+    no_extra_spaces: true
+    owner: '{{ username }}'
+    group: '{{ user["group"] }}'
+    mode: 0644
+  become: true
+  loop:
+    - option: Default
+      value: '{{ profiles["profiles"][profile_name]["path"] }}'
+    - option: Locked
+      value: 1
+
+- name: Set profile path variable
+  set_fact:
+    profile_path: '{{ user["home"] }}/.mozilla/firefox/{{ profiles["profiles"][profile_name]["path"] }}'
+
+- name: Set preferences
+  template:
+    src: user.js
+    dest: '{{ profile_path }}/user.js'
+    owner: '{{ username }}'
+    group: '{{ user["group"] }}'
+    mode: 0600
+  when: "preferences != {}"
+  become: true
+
+- name: Create extensions directory
+  file:
+    path: '{{ profile_path }}/extensions'
+    owner: '{{ username }}'
+    group: '{{ user["group"] }}'
+    mode: 0700
+    state: directory
+  when: extensions != []
+  become: true
+
+- name: Install extensions
+  get_url:
+    url: '{{ item.url }}'
+    checksum: '{{ item.checksum }}'
+    dest: '{{ profile_path }}/extensions/{{ item.id }}.xpi'
+    owner: '{{ username }}'
+    group: '{{ user["group"] }}'
+    mode: 0600
+  become: true
+  loop: '{{ extensions }}'
+
+- name: Set extension preferences
+  firefox_extension_preferences:
+    profile_path: '{{ profile_path }}'
+    owner: '{{ username }}'
+    group: '{{ user["group"] }}'
+    extension: '{{ item.id }}'
+    permission: internal:privateBrowsingAllowed
+  when: item.allow_private_browsing | default(false)
+  become: true
+  loop: '{{ extensions }}'

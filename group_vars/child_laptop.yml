@@ -1,4 +1,96 @@
 ---
+child_firefox_config:
+  extensions:
+    - id: jid1-MnnxcxisBPnSXQ@jetpack
+      url: https://addons.mozilla.org/firefox/downloads/file/4463652/privacy_badger17-2025.3.27.xpi
+      checksum: sha256:45976baab7476792dcad07f4386be618fd49b27eeb000c5e6b4b6f3611bf865e
+      allow_private_browsing: true
+
+    - id: uBlock0@raymondhill.net
+      name: uBlock Origin
+      url: https://addons.mozilla.org/firefox/downloads/file/4458450/ublock_origin-1.63.2.xpi
+      checksum: sha256:d93176cef4dc042e41ba500aa2a90e5d57b5be77449cbd522111585e3a0cd158
+      allow_private_browsing: true
+
+  preferences:
+    # Enhanced Tracking Protection level
+    browser.contentblocking.category: custom
+
+    # Disable "Allow Firefox to make personalized extension recommendations"
+    browser.discovery.enabled: false
+
+    # Use Firefox Home for "New tabs"
+    browser.newtabpage.enabled: true
+
+    # Disable "Recommend extensions as you browse"
+    browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons: false
+
+    # Disable "Recommend features as you browse"
+    browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features: false
+
+    # Firefox Home Content: Disable "Web Search"
+    browser.newtabpage.activity-stream.showSearch: false
+
+    # Firefox Home Content: Disable "Sponsored shortcuts"
+    browser.newtabpage.activity-stream.showSponsoredTopSites: false
+
+    # Search Shortcuts: Disable ...
+    browser.search.hiddenOneOffs: Google,Amazon.com,Bing
+
+    # Use Firefox Home for "Homepage and new windows"
+    browser.startup.homepage: about:home
+
+    # "Open previous windows and tabs"
+    browser.startup.page: 3
+
+    # "Confirm before closing multiple tabs"
+    browser.tabs.warnOnClose: true
+
+    # "Default Search Engine"
+    browser.urlbar.placeholderName: DuckDuckGo
+
+    # Disable "Show search suggestions ahead of browsing history in address bar results"
+    browser.urlbar.showSearchSuggestionsFirst: false
+
+    # Disable "Suggestions from sponsors"
+    browser.urlbar.suggest.quicksuggest.sponsored: false
+
+    # "Enable HTTPS-Only Mode in all windows"
+    dom.security.https_only_mode: true
+
+    # Disable autofill
+    extensions.formautofill.addresses.enabled: false
+    extensions.formautofill.creditCards.enabled: false
+
+    # Disable geolocation
+    geo.enabled: false
+
+    # Block all third party cookies
+    network.cookie.cookieBehavior: 1
+
+    # Block new requests to ...
+    permissions.default.camera: 2
+    permissions.default.desktop-notification: 2
+    permissions.default.geo: 2
+    permissions.default.microphone: 2
+    permissions.default.xr: 2
+
+    # Block tracking content in all windows
+    privacy.trackingprotection.enabled: true
+    privacy.trackingprotection.socialtracking.enabled: true
+
+    # Disable DES
+    security.ssl3.deprecated.rsa_des_ede3_sha: false
+
+    # Enable dark mode
+    ui.systemUsesDarkTheme: 1
+
+    # Latches
+    # accessibility.typeaheadfind.flashBar: 0
+    # browser.bookmarks.editDialog.confirmationHintShowCount: 3
+    browser.rights.3.shown: true
+    trailhead.firstrun.didSeeAboutWelcome: true
+
 packages:
   - arduino
   - arduino-makefile
