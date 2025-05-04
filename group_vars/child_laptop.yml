@@ -102,6 +102,7 @@ packages:
   - libreoffice
   - lwjgl
   - mupdf--
+  - thunar-archive
   - unzip--
   - vim--gtk3-perl-python3-ruby
   - vlc
